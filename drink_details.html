@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icon.png">
+    <script src="drink_details.js"></script>
+    <link rel="stylesheet" href="drink_details_style.css">
+    <script src="https://kit.fontawesome.com/3524e72bb1.js" crossorigin="anonymous"></script>
+    <title>Drink Details</title>
+</head>
+<body>
+    <div class="nav">
+        <a class="home-icon" href="index.html">
+            <i class="fas fa-home"></i> <!-- Font Awesome Home icon -->
+        </a>
+        <div class="title">
+            MIXD
+        </div>
+    </div>
+
+    <div id="drink-details-container">
+
+        <div id="drink-details">
+            <!-- Drink details will be displayed here using JavaScript -->
+            <h1>Drink Details</h1>
+            <div id="ingredients-list">
+                <!-- Ingredients will be displayed here using JavaScript -->
+            </div>
+        </div>
+
+        <script>
+            // Function to parse URL parameters
+            function getUrlParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            // Get the drink details from the URL
+            const drinkDetailsJson = getUrlParameter("details");
+            const drinkDetails = JSON.parse(decodeURIComponent(drinkDetailsJson));
+
+            // Function to display drink details including ingredients
+            function displayDrinkDetails(details) {
+                const drinkDetailsContainer = document.getElementById("drink-details");
+                const ingredientsListContainer = document.getElementById("ingredients-list"); // Get the ingredients list div
+
+                if (!details.drinks) {
+                    drinkDetailsContainer.innerHTML = "<p>Drink details not found.</p>";
+                    return;
+                }
+
+                details.drinks.forEach(function(cocktail) {
+                    const cocktailPicture = cocktail.strDrinkThumb;
+                    const cocktailName = cocktail.strDrink;
+                    const cocktailInstructions = cocktail.strInstructions;
+
+                    // Loop through ingredients and measures and add them to the ingredients list
+                    const ingredientsList = [];
+                    for (let i = 1; i <= 15; i++) {
+                        const ingredient = cocktail[`strIngredient${i}`];
+                        const measure = cocktail[`strMeasure${i}`];
+                        if (ingredient && measure) {
+                            ingredientsList.push(`${ingredient} - ${measure}`);
+                        } else {
+                            // If either ingredient or measure is empty, stop the loop
+                            break;
+                        }
+                    }
+
+                    // Generate HTML for the ingredient list
+                    const ingredientsListHtml = ingredientsList.map(item => `<p>${item}</p>`).join("");
+
+                    // Example: Display the cocktail name, ingredient list, and instructions
+                    const cocktailElement = document.createElement("div");
+                    cocktailElement.innerHTML = `
+                        <div style="text-align: center;">
+                            <img src="${cocktailPicture}" width="400" height="500">
+                        </div>
+                        <h2>${cocktailName}</h2>
+                        <!-- Display the ingredient list here -->
+                        <h3>${ingredientsListHtml}<h3>
+                        <h3>${cocktailInstructions}</h3>
+                        <!-- Add more HTML to display other drink details as needed -->
+                    `;
+
+                    drinkDetailsContainer.appendChild(cocktailElement);
+                });
+            }
+
+            // Display the drink details including ingredients
+            displayDrinkDetails(drinkDetails);
+        </script>
+
+            <div class="cocktail-details-container last">
+                <!-- Last cocktail details -->
+                <!-- ... your previous code for displaying cocktail details ... -->
+            </div>
+
+        <div class="search-button">
+            <a href="index.html">Search For Another Drink</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<!--
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icon.png">
+    <script src="drink_details.js"></script>
+    <link rel="stylesheet" href="drink_details_style.css">
+    <script src="https://kit.fontawesome.com/3524e72bb1.js" crossorigin="anonymous"></script>
+    <title>Drink Details</title>
+</head>
+<body>
+    <div class="nav">
+        <a class="home-icon" href="index.html">
+            <i class="fas fa-home"></i>
+        </a>
+        <div class="title">
+            MIXD
+        </div>
+    </div>
+
+    <div id="drink-details-container">
+        <div id="drink-details">
+            <h1>Drink Details</h1>
+            <div id="ingredients-list">
+            </div>
+        </div>
+
+        <div id="drink-list-container">
+            <h1>Drink List</h1>
+            <ul id="drink-list">
+            </ul>
+        </div>
+
+        <script>
+            // Function to parse URL parameters
+            function getUrlParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            // Get the drink details from the URL
+            const drinkDetailsJson = getUrlParameter("details");
+            const drinkDetails = JSON.parse(decodeURIComponent(drinkDetailsJson));
+
+            // Function to display drink details including ingredients
+            function displayDrinkDetails(details) {
+                const drinkDetailsContainer = document.getElementById("drink-details");
+                const ingredientsListContainer = document.getElementById("ingredients-list");
+
+                if (!details) {
+                    drinkDetailsContainer.innerHTML = "<p>Drink details not found.</p>";
+                    return;
+                }
+
+                // Display the details for each drink
+                details.forEach(function(cocktail) {
+                    const cocktailPicture = cocktail.strDrinkThumb;
+                    const cocktailName = cocktail.strDrink;
+                    const cocktailInstructions = cocktail.strInstructions;
+
+                    // Loop through ingredients and measures and add them to the ingredients list
+                    const ingredientsList = [];
+                    for (let i = 1; i <= 15; i++) {
+                        const ingredient = cocktail[`strIngredient${i}`];
+                        const measure = cocktail[`strMeasure${i}`];
+                        if (ingredient && measure) {
+                            ingredientsList.push(`${ingredient} - ${measure}`);
+                        } else {
+                            // If either ingredient or measure is empty, stop the loop
+                            break;
+                        }
+                    }
+
+                    // Generate HTML for the ingredient list
+                    const ingredientsListHtml = ingredientsList.map(item => `<p>${item}</p>`).join("");
+
+                    // Example: Display the cocktail name, ingredient list, and instructions
+                    const cocktailElement = document.createElement("div");
+                    cocktailElement.innerHTML = `
+                        <div style="text-align: center;">
+                            <img src="${cocktailPicture}" width="400" height="500">
+                        </div>
+                        <h2>${cocktailName}</h2>
+                        <h3>Ingredients:</h3>
+                        <div id="ingredients-list">${ingredientsListHtml}</div>
+                        <h3>Instructions:</h3>
+                        <p>${cocktailInstructions}</p>
+                    `;
+
+                    drinkDetailsContainer.appendChild(cocktailElement);
+                });
+            }
+
+            // Function to display the list of drinks
+            function displayDrinkList(drinks) {
+                const drinkListContainer = document.getElementById("drink-list");
+                drinks.forEach(function(drink) {
+                    const drinkName = drink.strDrink;
+                    const drinkListItem = document.createElement("li");
+                    drinkListItem.textContent = drinkName;
+                    drinkListContainer.appendChild(drinkListItem);
+                });
+            }
+
+            // Display the drink details and list
+            displayDrinkDetails(drinkDetails);
+            displayDrinkList(drinkDetails);
+        </script>
+    </div>
+</body>
+</html>
+
+
+-->
