@@ -10,6 +10,26 @@ $(document).ready(function() {
         });
     }
 
+    // Function to search for a cocktail by ingredient
+    function searchCocktailByIngredient(cocktailIngredient) {
+        const ingredientUrl = `https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${cocktailIngredient}`;
+
+        // Make an API request to search by ingredient
+            $.get(ingredientUrl, function(data) {
+                // Extract and display drink names
+                redirectToDrinkDetails(data)
+                // const drinks = data.drinks;
+            //     if (drinks) {
+            //         const drinkNames = drinks.map(drink => drink.strDrink);
+            //         const drinkList = drinkNames.join(', ');
+            //         alert(`Drinks with ${userSearchTerm}: ${drinkList}`);
+            //         redirectToDrinkDetailsPage(drinkList);
+            //     } else {
+            //         alert(`No drinks found with ${userSearchTerm}.`);
+            //     }
+            });
+    }
+
     // Function to redirect to the drink details page
     function redirectToDrinkDetails(data) {
         // Encode the drink details as a JSON string and pass it as a URL parameter
@@ -28,6 +48,20 @@ $(document).ready(function() {
         if (event.keyCode === 13) { // 13 is the key code for Enter key
             const cocktailName = $(this).val();
             searchCocktailByName(cocktailName);
+        }
+    });
+
+    // Search button click event for ingredients
+    $(".searchButton2").click(function() {
+        const cocktailIngredient = $(".searchInput2").val();
+        searchCocktailByIngredient(cocktailIngredient)
+    });
+
+    // Listen for Enter key press on the input field for ingredients
+    $(".searchInput2").keypress(function(event) {
+        if (event.keyCode === 13) { // Check for Enter key press
+            const cocktailIngredient = $(this).val(); // Get the user's search term
+            searchCocktailByIngredient(cocktailIngredient)
         }
     });
 });
